@@ -1,7 +1,10 @@
 package com.eduit.springbootdata.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ItemDto {
     private Long cantidad;
+    @JsonProperty("producto")
     private ProductoDto productoDto;
 
     public ItemDto() {}

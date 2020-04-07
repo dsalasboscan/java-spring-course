@@ -53,7 +53,7 @@ public class MainServiceImpl implements MainService {
     public ProductosRespuestaDto obtenerProductosPorCategoria(String nombreCategoria) {
         Categoria categoria = categoriaRepository.findCategoriaPorNombre(nombreCategoria);
 
-        List<Producto> productos = productoRepository.findAllByCategoriaNombre(nombreCategoria);
+        List<Producto> productos = productoRepository.findAllByCategoriaNombre(categoria.getNombre());
 
         List<ProductoDto> productoDtos = mapearProductosADto(productos);
 
@@ -75,12 +75,11 @@ public class MainServiceImpl implements MainService {
     private Double calcularMontoFactura(List<ItemDto> itemDtos) {
         return itemDtos
                 .stream()
-                .map(item -> item.getProductoDto())
-                .mapToDouble(productoDto -> productoDto.getPrecio())
+                .mapToDouble(item -> item.getProductoDto().getPrecio() * item.getCantidad())
                 .sum();
     }
 
     private List<ProductoDto> mapearProductosADto(List<Producto> productos) {
-        return productos.stream().map(producto -> new ProductoDto(producto.getNombre(), producto.getPrecio())).collect(Collectors.toList());
+        return productos.stream().map(producto -> new ProductoDto(producto.getNombre(), producto.getPrecio(), producto.getCategoria().getId())).collect(Collectors.toList());
     }
 }
