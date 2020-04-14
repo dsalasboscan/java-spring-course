@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Tasks Organization APP</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+<div th:replace="/fragments/navbar :: navbar"></div>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th style="width: 33.33%">TODO</th>
+        <th style="width: 33.33%">In Progress</th>
+        <th style="width: 33.33%">Done</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr>
+        <td>
+            <div th:each="task : ${tasks.TO_DO}">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 th:text="${task.title}" class="card-title"></h4>
+
+                                <label>Description</label>
+                                <p th:text="${task.description}" class="card-text">$</p>
+
+                                <label>Due Date</label>
+                                <p th:text="${task.dueDate}" class="card-text"></p>
+                            </div>
+                            <div class="card-body">
+                                <a th:href="@{/task/transition/{id}(id=${task.id}, status=IN_PROGRESS )}">PROMOTE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+
+        <td>
+            <div th:each="task : ${tasks.IN_PROGRESS}">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 th:text="${task.title}" class="card-title"></h4>
+
+                                <label>Description</label>
+                                <p th:text="${task.description}" class="card-text">$</p>
+
+                                <label>Due Date</label>
+                                <p th:text="${task.dueDate}" class="card-text"></p>
+
+                            </div>
+                            <div class="card-body">
+                                <a th:href="@{/task/transition/{id}(id=${task.id}, status=TO_DO )}">DEMOTE</a>
+                                <a th:href="@{/task/transition/{id}(id=${task.id}, status=DONE )}">PROMOTE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+
+        <td>
+            <div th:each="task : ${tasks.DONE}">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 th:text="${task.title}" class="card-title"></h4>
+
+                                <label>Description</label>
+                                <p th:text="${task.description}" class="card-text">$</p>
+
+                                <label>Due Date</label>
+                                <p th:text="${task.dueDate}" class="card-text"></p>
+
+                            </div>
+                            <div class="card-body">
+                                <a th:href="@{/task/transition/{id}(id=${task.id}, status=IN_PROGRESS )}">DEMOTE</a>
+                                <a th:href="@{/task/transition/{id}(id=${task.id}, status=CLOSE )}">CLOSE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script>
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+    });
+</script>
+
+</body>
+</html>
