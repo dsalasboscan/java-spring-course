@@ -1,5 +1,7 @@
 package com.eduit.spring.model.task;
 
+import com.eduit.spring.model.User;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -20,6 +22,9 @@ public class Task {
     private LocalDateTime dueDate;
 
     private String status;
+
+    @OneToOne
+    private User user;
 
     public Task() {
     }
@@ -77,6 +82,14 @@ public class Task {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

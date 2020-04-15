@@ -3,6 +3,7 @@ package com.eduit.spring.controller;
 import com.eduit.spring.model.task.dto.TaskDto;
 import com.eduit.spring.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,8 +23,8 @@ public class TaskController {
     }
 
     @GetMapping(value = {"/", "/tasks"})
-    public ModelAndView home() {
-        Map<String, List<TaskDto>> classifiedTasks = taskService.getTasksDividedByStatus();
+    public ModelAndView home(Authentication authentication) {
+        Map<String, List<TaskDto>> classifiedTasks = taskService.getTasksDividedByStatus(authentication);
         ModelAndView modelAndView = new ModelAndView("tasks");
         modelAndView.addObject("tasks", classifiedTasks);
         return modelAndView;
@@ -43,16 +44,21 @@ public class TaskController {
     @PostMapping(value = "/task/add")
     public String addTask(
         @ModelAttribute("task") TaskDto task,
-        @ModelAttribute("tasks") Map<String, List<TaskDto>> classifiedTasks) {
+        @ModelAttribute("tasks") Map<String, List<TaskDto>> classifiedTasks,
+        Authentication authentication) {
 
-        TaskDto savedTask = taskService.add(task);
-        classifiedTasks.get("TO_DO").add(savedTask);
-        return "redirect:/tasks";
+        if (authentication != null) {
+            TaskDto savedTask = taskService.add(task, authentication.getName());
+            classifiedTasks.get("TO_DO").add(savedTask);
+            return "redirect:/tasks";
+        }
+
+        return "redirect:/login";
     }
 
     @ModelAttribute("tasks")
-    public Map<String, List<TaskDto>> createClassifiedTasksModel() {
-        return taskService.getTasksDividedByStatus();
+    public Map<String, List<TaskDto>> createClassifiedTasksModel(Authentication authentication) {
+        return taskService.getTasksDividedByStatus(authentication);
     }
 
     @ModelAttribute("task")

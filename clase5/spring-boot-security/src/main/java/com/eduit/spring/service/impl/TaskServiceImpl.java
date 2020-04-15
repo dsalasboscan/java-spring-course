@@ -1,12 +1,15 @@
 package com.eduit.spring.service.impl;
 
 import com.eduit.spring.model.DtoMapper;
+import com.eduit.spring.model.User;
 import com.eduit.spring.model.task.Task;
 import com.eduit.spring.model.task.TaskStatus;
 import com.eduit.spring.model.task.dto.TaskDto;
 import com.eduit.spring.repository.TaskRepository;
+import com.eduit.spring.repository.UserRepository;
 import com.eduit.spring.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,11 +26,14 @@ public class TaskServiceImpl implements TaskService {
     private DtoMapper<TaskDto, Task> dtoToTaskMapper;
     private DtoMapper<Task, TaskDto> taskToDtoMapper;
 
+    private final UserRepository userRepository;
+
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository, DtoMapper<TaskDto, Task> dtoToTaskMapper, DtoMapper<Task, TaskDto> taskToDtoMapper) {
+    public TaskServiceImpl(TaskRepository taskRepository, DtoMapper<TaskDto, Task> dtoToTaskMapper, DtoMapper<Task, TaskDto> taskToDtoMapper, UserRepository userRepository) {
         this.taskRepository = taskRepository;
         this.dtoToTaskMapper = dtoToTaskMapper;
         this.taskToDtoMapper = taskToDtoMapper;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -37,9 +43,9 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Map<String, List<TaskDto>> getTasksDividedByStatus() {
+    public Map<String, List<TaskDto>> getTasksDividedByStatus(Authentication authentication) {
         Map<String, List<TaskDto>> tasksByStatus = new HashMap<>();
-        List<Task> tasks = taskRepository.findAll();
+        List<Task> tasks = taskRepository.findAllByUserEmail(authentication.getName());
 
         addToTaskByStatusMap(tasksByStatus, tasks, TaskStatus.TO_DO.name());
         addToTaskByStatusMap(tasksByStatus, tasks, TaskStatus.IN_PROGRESS.name());
@@ -56,9 +62,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskDto add(TaskDto taskDto) {
+    public TaskDto add(TaskDto taskDto, String email) {
+        User user = userRepository.findByEmail(email);
+
         Task task = dtoToTaskMapper.map(taskDto);
         task.setStatus(TaskStatus.TO_DO.name());
+
+        task.setUser(user);
+        user.addTask(task);
 
         taskRepository.save(task);
 

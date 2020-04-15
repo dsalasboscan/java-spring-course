@@ -6,10 +6,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Modifying
     @Query("UPDATE Task t SET t.status = ?1 WHERE id = ?2")
     void updateStatus(String status, Long id);
+
+    List<Task> findAllByUserEmail(String email);
 }
