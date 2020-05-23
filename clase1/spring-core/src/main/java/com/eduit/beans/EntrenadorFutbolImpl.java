@@ -15,6 +15,7 @@ public class EntrenadorFutbolImpl implements Entrenador {
 
     @Override
     public void darFacturacion() {
-
+        double facturacion = facturacionService.calcularFactura(40, 3);
+        System.out.println(facturacion);
     }
 }

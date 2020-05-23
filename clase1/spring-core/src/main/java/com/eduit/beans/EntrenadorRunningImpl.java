@@ -20,6 +20,7 @@ public class EntrenadorRunningImpl implements Entrenador {
 
     @Override
     public void darFacturacion() {
-        facturacionService.calcularFactura();
+        double facturacion = facturacionService.calcularFactura(50, 5);
+        System.out.println(facturacion);
     }
 }

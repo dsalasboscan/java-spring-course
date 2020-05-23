@@ -2,10 +2,10 @@ package com.eduit.beans;
 
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("facturacionServiceAnnotation")
 public class FacturacionService {
 
-    public void calcularFactura() {
-        System.out.println("Cobro por clase: 20000");
+    public double calcularFactura(double costoPorHora, int cantidadDeHoras) {
+        return costoPorHora * cantidadDeHoras;
     }
 }
