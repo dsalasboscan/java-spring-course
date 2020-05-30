@@ -17,7 +17,7 @@ public class HibernateConfigWithAOP {
 
     private static final String PACKAGE_TO_SCAN = "com.eduit";
     private static final String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
-    private static final String DATABASE_CONNECTION_STRING = "jdbc:mysql://localhost:3306/dbo?serverTimezone=UTC";
+    private static final String DATABASE_CONNECTION_STRING = "jdbc:mysql://localhost:3306/eduit?serverTimezone=UTC";
     private static final String DATABASE_USERNAME = "root";
     private static final String DATABASE_PASSWORD = "Admin123#";
 
