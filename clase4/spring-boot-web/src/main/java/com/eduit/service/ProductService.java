@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,4 +40,16 @@ public class ProductService {
       return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
   }
+  
+  public ResponseEntity<List<RecursoCreadoDto>> addAllProducts(List<ProductDto> productos){
+	  List<RecursoCreadoDto> productosCreados = new ArrayList<RecursoCreadoDto>();
+	  for (ProductDto productDto : productos) {
+		  Producto producto = modelMapper.map(productDto, Producto.class);
+		  productoRepository.save(producto);
+		  RecursoCreadoDto rcd = new RecursoCreadoDto(producto.getId());
+		  productosCreados.add(rcd);
+		 }
+	  return new ResponseEntity<>(productosCreados, HttpStatus.CREATED);
+  }
+  
 }
