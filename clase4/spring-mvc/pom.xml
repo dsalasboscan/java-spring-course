@@ -6,7 +6,7 @@
 	<groupId>com.eduit</groupId>
 	<artifactId>spring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring</name>
+	<name>clase4-referencia</name>
 	<packaging>war</packaging>
 	<description>Curso spring</description>
 
