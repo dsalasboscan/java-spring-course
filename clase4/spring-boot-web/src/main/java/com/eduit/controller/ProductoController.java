@@ -37,4 +37,9 @@ public class ProductoController {
   public ResponseEntity<List<RecursoCreadoDto>> addBulk(@RequestBody List<ProductDto> productos) {
     return productService.addAllProducts(productos);
   }
+  
+  @GetMapping(value = "/producto/all")
+  public ResponseEntity<List<ProductDto>> getAll() {
+    return productService.getAll();
+  }
 }
