@@ -25,6 +25,8 @@ public class ProductService {
     Producto producto = modelMapper.map(productDto, Producto.class);
     productoRepository.save(producto);
 
+    System.out.println("hola mundo");
+
     return new ResponseEntity<>(new RecursoCreadoDto(producto.getId()), HttpStatus.CREATED);
   }
 
