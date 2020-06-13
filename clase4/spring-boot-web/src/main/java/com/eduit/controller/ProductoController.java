@@ -1,5 +1,6 @@
 package com.eduit.controller;
 
+import com.eduit.model.Producto;
 import com.eduit.model.dto.ProductDto;
 import com.eduit.model.dto.RecursoCreadoDto;
 import com.eduit.service.ProductService;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class ProductoController {
@@ -23,6 +26,11 @@ public class ProductoController {
   @PostMapping(value = "/producto/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<RecursoCreadoDto> add(@RequestBody ProductDto productDto) {
     return productService.add(productDto);
+  }
+
+  @PostMapping(value = "/producto/add-bulk", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<List<RecursoCreadoDto>> addBulk(@RequestBody List<ProductDto> productDtos) {
+    return productService.addBulk(productDtos);
   }
 
   @GetMapping(value = "/producto/{id}")

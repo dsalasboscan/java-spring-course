@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -22,10 +24,22 @@ public class ProductService {
   private ModelMapper modelMapper;
 
   public ResponseEntity<RecursoCreadoDto> add(ProductDto productDto) {
+    return new ResponseEntity<>(new RecursoCreadoDto(doSave(productDto)), HttpStatus.CREATED);
+  }
+
+<<<<<<< Updated upstream
+    return new ResponseEntity<>(new RecursoCreadoDto(producto.getId()), HttpStatus.CREATED);
+=======
+  public ResponseEntity<List<RecursoCreadoDto>> addBulk(List<ProductDto> productDtos) {
+    return new ResponseEntity<>(productDtos.stream()
+      .map(productDto -> new RecursoCreadoDto(doSave(productDto))).collect(Collectors.toList()), HttpStatus.CREATED);
+  }
+
+  private Long doSave(ProductDto productDto) {
     Producto producto = modelMapper.map(productDto, Producto.class);
     productoRepository.save(producto);
-
-    return new ResponseEntity<>(new RecursoCreadoDto(producto.getId()), HttpStatus.CREATED);
+    return producto.getId();
+>>>>>>> Stashed changes
   }
 
   public ResponseEntity<ProductDto> getById(Long id) {
