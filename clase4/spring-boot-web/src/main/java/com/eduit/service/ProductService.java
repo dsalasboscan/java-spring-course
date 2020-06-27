@@ -52,4 +52,13 @@ public class ProductService {
 	  return new ResponseEntity<>(productosCreados, HttpStatus.CREATED);
   }
   
+  public ResponseEntity<List<ProductDto>> getAll(){
+	  List<ProductDto> productosDto = new ArrayList<ProductDto>();
+	  List<Producto> productos = productoRepository.findAll();
+	  for (Producto product : productos) {
+		  ProductDto productDto = modelMapper.map(product, ProductDto.class);
+		  productosDto.add(productDto);
+		 }
+	  return new ResponseEntity<>(productosDto, HttpStatus.CREATED);
+  }
 }
